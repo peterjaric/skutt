@@ -3,5 +3,10 @@ This is code used in the SKUTT project at Uppsala university.
 Developed using:
 
 * Groovy Version: 1.7.3 JVM: 1.6.0_22
+
+Any newer version downloaded from http://groovy.codehaus.org/ should work
+
 * Grails 1.3.5
+
+Any newer 1.3-version should work. 
 
