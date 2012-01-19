@@ -9,9 +9,11 @@ package se.uu.library
 class LogoutController {
         
 	def index = {
-	    session.invalidate()
-	    render "Logged out!"
-	
+	    log.info("Logout: " + session.getAttribute("loggedInUser"))
+	    session.removeAttribute("loggedIn")
+	    session.removeAttribute("loggedInUser")
+	    session.removeAttribute("user")
+	    flash.message = "Logged out!"
 	}
 }
 
