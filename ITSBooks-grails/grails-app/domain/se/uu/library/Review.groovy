@@ -1,7 +1,8 @@
 package se.uu.library
 
 class Review {
-    
+    static expose = 'review'
+       
     User user
     Book book
     String text
