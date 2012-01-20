@@ -1,7 +1,8 @@
 package se.uu.library
 
 class Book {
-    
+    static expose = 'book'
+        
     Date dateCreated
     Date lastUpdated
     User updatedBy
