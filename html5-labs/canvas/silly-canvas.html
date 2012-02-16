@@ -1,0 +1,40 @@
+<html charset="utf-8">
+<head>
+<title>SKUTT html5 labs</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<style>
+#canvas { border: 2px solid;}
+</style>
+</head>
+<body>
+	
+	<h1>Silly canvas</h1>
+	
+	<canvas id="canvas" width="300" height="300"></canvas> 
+
+	<script type="text/javascript">
+	$(document).ready(function() {
+		
+	function draw(x,y) {
+		var canvas = document.getElementById('canvas');
+	    var ctx = canvas.getContext('2d');
+	    var img = new Image();
+	    img.onload = function(){
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+	        ctx.drawImage(img,100+100*Math.sin(x/100),100+100*Math.cos(y/200));
+			ctx.drawImage(img,100+100*Math.cos(x/200),100+100*Math.sin(y/100));
+			ctx.drawImage(img,100+100*Math.cos(x/100),100);
+			ctx.drawImage(img,100,100+100*Math.cos(y/100));
+	    };
+ 	    img.src = 'uu.png';
+	  };
+	  
+	  var ii = 0;
+	  setInterval(function() {
+			draw(ii++,ii);
+		},1);
+	});
+	</script>
+	
+</body>
+</html>
