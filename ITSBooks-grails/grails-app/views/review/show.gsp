@@ -59,7 +59,7 @@
                     </tbody>
                 </table>
             </div>
-	    <g:if test="${reviewInstance.user.userId == session.getAttribute('loggedInUser')}">
+	    <g:if test="${reviewInstance.user.userId == request.getRemoteUser()}">
             <div class="buttons">
                 <g:form>
                     <g:hiddenField name="id" value="${reviewInstance?.id}" />

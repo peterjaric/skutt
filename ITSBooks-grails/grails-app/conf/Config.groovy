@@ -51,23 +51,19 @@ grails.spring.bean.packages = []
 // set per-environment serverURL stem for creating absolute links
 environments {
     production {
-	grails.serverURL = "http://itsbooks.cloudfoundry.com"
-	cas.loginUrl = 'https://cas.user.uu.se/cas/login'
-	cas.validateUrl = 'https://cas.user.uu.se/cas/serviceValidate'
-	cas.serverName = 'itsbooks.cloudfoundry.com'
-	disabled = false		
+	grails.plugins.springsecurity.cas.loginUri = '/caslogin'
+	grails.plugins.springsecurity.cas.serviceUrl = 'http://itsbooks.cloudfoundry.com/j_spring_cas_security_check'
+	grails.plugins.springsecurity.cas.serverUrlPrefix = 'https://cas.user..uu.se/cas/'
+	grails.plugins.springsecurity.cas.proxyCallbackUrl = 'http://itsbooks.cloudfoundry.com/secure/receptor'
+	grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'	
     }
     development {
-        grails.serverURL = "http://localhost:8080/${appName}"
-	cas.loginUrl = 'https://cas-akkatest.its.uu.se/castest/login'
-	cas.validateUrl = 'https://cas-akkatest.its.uu.se/castest/serviceValidate'
-	cas.serverName = 'localhost:8080'
-	disabled = false	
+	grails.plugins.springsecurity.cas.loginUri = '/caslogin'
+	grails.plugins.springsecurity.cas.serviceUrl = 'http://localhost:8081/ITSBooks/j_spring_cas_security_check'
+	grails.plugins.springsecurity.cas.serverUrlPrefix = 'https://cas-akkatest.its.uu.se/castest/'
+	grails.plugins.springsecurity.cas.proxyCallbackUrl = 'http://localhost:8081/ITSBooks/secure/receptor'
+	grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
     }
-}
-
-cas {
-    urlPattern = ['/book/*', '/user/*', '/review/*']
 }
 
 // log4j configuration
@@ -94,5 +90,14 @@ log4j = {
            'net.sf.ehcache.hibernate'
 
     warn   'org.mortbay.log'
+    
+    //debug   'org.springframework'
 }
+
+grails.plugins.springsecurity.userLookup.userDomainClassName='se.uu.library.User'
+grails.plugins.springsecurity.userLookup.usernamePropertyName='userId'
+grails.plugins.springsecurity.useSecurityEventListener = true
+
+
+grails.plugins.springsecurity.providerNames = [ 'casAuthenticationProvider' ]
 
