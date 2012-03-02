@@ -53,7 +53,7 @@ environments {
     production {
 	grails.plugins.springsecurity.cas.loginUri = '/caslogin'
 	grails.plugins.springsecurity.cas.serviceUrl = 'http://itsbooks.cloudfoundry.com/j_spring_cas_security_check'
-	grails.plugins.springsecurity.cas.serverUrlPrefix = 'https://cas.user..uu.se/cas/'
+	grails.plugins.springsecurity.cas.serverUrlPrefix = 'https://cas.user.uu.se/cas/'
 	grails.plugins.springsecurity.cas.proxyCallbackUrl = 'http://itsbooks.cloudfoundry.com/secure/receptor'
 	grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'	
     }
