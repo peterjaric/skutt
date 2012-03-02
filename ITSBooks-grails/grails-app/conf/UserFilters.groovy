@@ -1,5 +1,7 @@
 import se.uu.library.*
 
+// This filter makes sure that the User object is available on the session
+
 class UserFilters {
    def filters = {
        loginCheck(controller: '*', action: '*') {
