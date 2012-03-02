@@ -59,9 +59,9 @@ environments {
     }
     development {
 	grails.plugins.springsecurity.cas.loginUri = '/caslogin'
-	grails.plugins.springsecurity.cas.serviceUrl = 'http://localhost:8081/ITSBooks/j_spring_cas_security_check'
+	grails.plugins.springsecurity.cas.serviceUrl = 'http://localhost:8080/ITSBooks/j_spring_cas_security_check'
 	grails.plugins.springsecurity.cas.serverUrlPrefix = 'https://cas-akkatest.its.uu.se/castest/'
-	grails.plugins.springsecurity.cas.proxyCallbackUrl = 'http://localhost:8081/ITSBooks/secure/receptor'
+	grails.plugins.springsecurity.cas.proxyCallbackUrl = 'http://localhost:8080/ITSBooks/secure/receptor'
 	grails.plugins.springsecurity.cas.proxyReceptorUrl = '/secure/receptor'
     }
 }
