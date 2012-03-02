@@ -71,7 +71,7 @@
 		    <g:if test="${bookInstance.checkedOutBy == null}">
 		    <span class="button"><g:actionSubmit class="edit" action="checkout" value="${message(code: 'default.button.checkout.label', default: 'Checkout')}" /></span>
 		    </g:if>
-		    <g:if test="${bookInstance.checkedOutBy != null && bookInstance.checkedOutBy.id == session.getAttribute('user').id}">
+		    <g:if test="${bookInstance.checkedOutBy != null && bookInstance.checkedOutBy.id == session.getAttribute("user").id}">
 		    <span class="button"><g:actionSubmit class="edit" action="returnBook" value="${message(code: 'default.button.return.label', default: 'Return')}" /></span>
 		     </g:if>
 		 </g:form>
