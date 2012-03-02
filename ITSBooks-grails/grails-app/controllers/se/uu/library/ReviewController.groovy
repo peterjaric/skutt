@@ -1,5 +1,7 @@
 package se.uu.library
 
+import grails.plugins.springsecurity.Secured
+
 class ReviewController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -13,15 +15,18 @@ class ReviewController {
         [reviewInstanceList: Review.list(params), reviewInstanceTotal: Review.count()]
     }
 
+    @Secured(['ROLE_USER'])
     def create = {
         def reviewInstance = new Review()
         reviewInstance.properties = params
         return [reviewInstance: reviewInstance]
     }
 
+    @Secured(['ROLE_USER'])
     def save = {
         def reviewInstance = new Review(params)
-	reviewInstance.setUser(session.getAttribute("user"))
+	def user = User.findByUserId(request.getRemoteUser())
+	reviewInstance.setUser(user)
         if (reviewInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'review.label', default: 'Review'), reviewInstance.id])}"
             redirect(action: "show", id: reviewInstance.id)
@@ -42,10 +47,11 @@ class ReviewController {
         }
     }
     
+    @Secured(['ROLE_USER'])
     def addOrEditReviewForBook = {
 	def bookInstance = Book.get(params.id)
 	log.info(bookInstance)
-	def user = session.getAttribute("user")
+	def user = User.findByUserId(request.getRemoteUser())
 	def reviewInstance = Review.findWhere(book:bookInstance,user:user)
         if (reviewInstance == null) {
 	    reviewInstance = new Review();
@@ -58,6 +64,7 @@ class ReviewController {
 	}
     }
 
+    @Secured(['ROLE_USER'])
     def edit = {
         def reviewInstance = Review.get(params.id)
         if (!reviewInstance) {
@@ -69,9 +76,10 @@ class ReviewController {
         }
     }
 
+    @Secured(['ROLE_USER'])
     def update = {
         def reviewInstance = Review.get(params.id)
-	if(reviewInstance.getUser().getUserId() != session.getAttribute("user").getUserId()) {
+	if(reviewInstance.getUser().getUserId() != request.getRemoteUser()) {
 	    reviewInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'review.label', default: 'Review')] as Object[], "Another user has updated this Review while you were editing")
 	    render(view: "edit", model: [reviewInstance: reviewInstance])
 	    return
@@ -86,7 +94,6 @@ class ReviewController {
                 }
             }
             reviewInstance.properties = params
-	    //reviewInstance.setUser(session.getAttribute("user"))
             if (!reviewInstance.hasErrors() && reviewInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'review.label', default: 'Review'), reviewInstance.id])}"
                 redirect(action: "show", id: reviewInstance.id)
@@ -101,6 +108,7 @@ class ReviewController {
         }
     }
 
+    @Secured(['ROLE_USER'])
     def delete = {
         def reviewInstance = Review.get(params.id)
         if (reviewInstance) {
