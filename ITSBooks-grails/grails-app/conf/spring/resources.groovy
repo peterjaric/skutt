@@ -1,25 +1,23 @@
 import se.uu.library.LoginEventListener
-import se.uu.library.DBUserDetailsService
+import se.uu.library.DBAutoCreatingUserDetailsService
+import org.codehaus.groovy.grails.commons.ConfigurationHolder as CH
 
-//def config = org.codehaus.groovy.grails.commons.ConfigurationHolder.config
 
 beans = {
-    //securityEventListener(LoginEventListener)
-    dBUserDetailsService(DBUserDetailsService)
+    
+    dBAutoCreatingUserDetailsService(DBAutoCreatingUserDetailsService)
    
     
-    cas20TicketValidator(org.jasig.cas.client.validation.Cas20ProxyTicketValidator,"https://cas-akkatest.its.uu.se/castest/")
+    cas20TicketValidator(org.jasig.cas.client.validation.Cas20ProxyTicketValidator,CH.config.grails.plugins.springsecurity.cas.serverUrlPrefix)
     
     casServiceProperties(org.springframework.security.cas.ServiceProperties) {
-	service = 'http://localhost:8081/ITSBooks/j_spring_cas_security_check'
+	service = CH.config.grails.plugins.springsecurity.cas.serviceUrl
     }
 
-    
     casAuthenticationProvider(org.springframework.security.cas.authentication.CasAuthenticationProvider) {
-	userDetailsService = dBUserDetailsService
-	ticketValidator = cas20TicketValidator
+	userDetailsService = dBAutoCreatingUserDetailsService	
+ticketValidator = cas20TicketValidator
 	key = "rogntudjuuuu"
 	serviceProperties = casServiceProperties
-
     }
 }

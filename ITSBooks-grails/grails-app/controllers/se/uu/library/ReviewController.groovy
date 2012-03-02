@@ -1,5 +1,7 @@
 package se.uu.library
 
+import grails.plugins.springsecurity.Secured
+
 class ReviewController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -13,12 +15,14 @@ class ReviewController {
         [reviewInstanceList: Review.list(params), reviewInstanceTotal: Review.count()]
     }
 
+    @Secured(['ROLE_USER'])
     def create = {
         def reviewInstance = new Review()
         reviewInstance.properties = params
         return [reviewInstance: reviewInstance]
     }
 
+    @Secured(['ROLE_USER'])
     def save = {
         def reviewInstance = new Review(params)
 	def user = User.findByUserId(request.getRemoteUser())
@@ -43,6 +47,7 @@ class ReviewController {
         }
     }
     
+    @Secured(['ROLE_USER'])
     def addOrEditReviewForBook = {
 	def bookInstance = Book.get(params.id)
 	log.info(bookInstance)
@@ -59,6 +64,7 @@ class ReviewController {
 	}
     }
 
+    @Secured(['ROLE_USER'])
     def edit = {
         def reviewInstance = Review.get(params.id)
         if (!reviewInstance) {
@@ -70,6 +76,7 @@ class ReviewController {
         }
     }
 
+    @Secured(['ROLE_USER'])
     def update = {
         def reviewInstance = Review.get(params.id)
 	if(reviewInstance.getUser().getUserId() != request.getRemoteUser()) {
@@ -101,6 +108,7 @@ class ReviewController {
         }
     }
 
+    @Secured(['ROLE_USER'])
     def delete = {
         def reviewInstance = Review.get(params.id)
         if (reviewInstance) {

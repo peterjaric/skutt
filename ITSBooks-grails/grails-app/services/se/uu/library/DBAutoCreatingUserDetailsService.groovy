@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.GrantedAuthorityImpl
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 
-class DBUserDetailsService implements GrailsUserDetailsService {
+class DBAutoCreatingUserDetailsService implements GrailsUserDetailsService {
 
     UserDetails loadUserByUsername(String username, boolean loadRoles)
     throws UsernameNotFoundException {

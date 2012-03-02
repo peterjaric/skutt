@@ -5,9 +5,9 @@ import se.uu.library.spring.Role
 class User implements org.springframework.security.core.userdetails.UserDetails {
     static expose = 'user'
    
-    String userId
+    String userId="FOO"
     Date lastLogin
-    String password = ""
+    String password
     Boolean enabled = true
     Boolean accountExpired = false;
     Boolean accountLocked = false;
@@ -16,7 +16,7 @@ class User implements org.springframework.security.core.userdetails.UserDetails 
     static constraints = {
 	userId(blank: false, unique: true)
 	lastLogin(nullable:true)
-	password(nullable:false)
+	password(nullable:true)
 	enabled(nullable:true)
 	accountExpired(nullable:true)
 	accountLocked(nullable:true)
@@ -24,6 +24,10 @@ class User implements org.springframework.security.core.userdetails.UserDetails 
     }
 
     static hasMany = [reviews:Review]
+    
+    static api = [
+	excludedFields: [ "password" ]
+    ]
     
     Collection getAuthorities() {
 	return [ new Role() ]
