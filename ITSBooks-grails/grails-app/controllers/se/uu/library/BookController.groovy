@@ -15,6 +15,11 @@ class BookController {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [bookInstanceList: Book.list(params), bookInstanceTotal: Book.count()]
     }
+
+    def favouritesList = {
+        def bookList = Book.list();
+        [bookInstanceList: bookList]
+    }
     
     @Secured(['ROLE_USER'])
     def create = {
