@@ -21,7 +21,7 @@
 	    <li class="topmenu"><g:link controller="user">Users</g:link>
 	    <li class="topmenu"><g:link controller="logout">Logout</g:link> 
 	  </ul>
-	    <span class="loggedInUserName">logged in</span>
+	    <span class="loggedInUserName">logged in as ${session.getAttribute('user').getUserId()}</span>
 	  </sec:ifLoggedIn>
 	  </div>
     <g:layoutBody />
