@@ -13,7 +13,7 @@
             <img src="${resource(dir:'images',file:'spinner.gif')}" alt="${message(code:'spinner.alt',default:'Loading...')}" />
         </div>
 	<div class="intro" style="background: url('${resource(dir:"images",file:"sigill.jpeg")}');">
-	  <g:if test="${session?.getAttribute("loggedInUser")}">
+	  <sec:ifLoggedIn>
 	  <ul class="topmenu">
 	    <li class="topmenu"><g:link controller="book">Home</g:link>
 	    <li class="topmenu"><g:link controller="review">Reviews</g:link>
@@ -21,8 +21,8 @@
 	    <li class="topmenu"><g:link controller="user">Users</g:link>
 	    <li class="topmenu"><g:link controller="logout">Logout</g:link> 
 	  </ul>
-	    <span class="loggedInUserName">logged in as ${session?.getAttribute("loggedInUser")}</span>
-	  </g:if>
+	    <span class="loggedInUserName">logged in as ${session.getAttribute('user').getUserId()}</span>
+	  </sec:ifLoggedIn>
 	  </div>
     <g:layoutBody />
       </div>

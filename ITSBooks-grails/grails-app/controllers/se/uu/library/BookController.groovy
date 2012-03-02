@@ -1,5 +1,8 @@
 package se.uu.library
 
+import grails.plugins.springsecurity.Secured
+
+
 class BookController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -18,19 +21,21 @@ class BookController {
         [bookInstanceList: bookList]
     }
     
+    @Secured(['ROLE_USER'])
     def create = {
         def bookInstance = new Book()
         bookInstance.properties = params
         return [bookInstance: bookInstance]
     }
     
+    @Secured(['ROLE_USER'])
     def checkout = {
 	def bookInstance = Book.get(params.id)
 	if(bookInstance.checkedOutBy) {
 	    flash.message = "${message(code: 'default.optimistic.locking.failure', args: [message(code: 'book.label', default: 'Book'), params.id])}"
         }
 	else {
-	    bookInstance.setCheckedOutBy(session.getAttribute("user"))
+	    bookInstance.setCheckedOutBy(User.findByUserId(request.getRemoteUser()))
 	    bookInstance.setCheckoutDate(new Date());
 	    bookInstance.save(flush:true)
 	    flash.message = "${message(code: 'default.updated.message', args: [message(code: 'book.label', default: 'Book'), bookInstance.id])}"
@@ -38,19 +43,24 @@ class BookController {
 	render(view: "show", model: [bookInstance: bookInstance])
     }
     
+    @Secured(['ROLE_USER'])
     def returnBook = {
 	def bookInstance = Book.get(params.id)
+	def user = session.getAttribute("user")
+	//log.info(user + " returning book " + bookInstance)
 	if(bookInstance.checkedOutBy != null && bookInstance.checkedOutBy.id == session.getAttribute("user").id ) {
 	    bookInstance.setCheckedOutBy(null)
 	    bookInstance.setCheckoutDate(null)
-	    flash.message = "${message(code: 'default.updated.message', args: [message(code: 'book.label', default: 'Book'), bookInstance.id])}"    
+	    flash.message = "${message(code: 'default.updated.message', args: [message(code: 'book.label', default: 'Book'), bookInstance.id])}"
+	    redirect(action: "show", id: bookInstance.id)
 	}
 	else {
 	    bookInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'book.label', default: 'Book')] as Object[], "Another user has updated this Book while you were editing")               
+	    render(view: "show", model: [bookInstance: bookInstance])
 	}
-	render(view: "show", model: [bookInstance: bookInstance])
     }
 
+    @Secured(['ROLE_USER'])
     def save = {
         def bookInstance = new Book(params)
 	bookInstance.setUpdatedBy(session.getAttribute("user"))
@@ -74,6 +84,7 @@ class BookController {
         }
     }
 
+    @Secured(['ROLE_USER'])
     def edit = {
         def bookInstance = Book.get(params.id)
         if (!bookInstance) {
@@ -85,6 +96,7 @@ class BookController {
         }
     }
 
+    @Secured(['ROLE_USER'])
     def update = {
         def bookInstance = Book.get(params.id)
         if (bookInstance) {
@@ -98,7 +110,7 @@ class BookController {
                 }
             }
             bookInstance.properties = params
-	    bookInstance.setUpdatedBy(session.getAttribute("user"))
+	    bookInstance.setUpdatedBy(request.getRemoteUser())
             if (!bookInstance.hasErrors() && bookInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'book.label', default: 'Book'), bookInstance.id])}"
                 redirect(action: "show", id: bookInstance.id)
@@ -113,6 +125,7 @@ class BookController {
         }
     }
 
+    @Secured(['ROLE_USER'])
     def delete = {
         def bookInstance = Book.get(params.id)
         if (bookInstance) {
