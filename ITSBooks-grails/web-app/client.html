@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Simple ITSBooks client</title>
+  </head>
+  <body>
+    <!-- 
+      TODO:
+      Add templates (moustasche, t ex).
+      Ladda template från fil. Henrik@ULL vet mer...
+      -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+    var main = $('<div id="main"></div>');
+    $.getJSON('api/book', function(data) {
+	var items = [];
+    
+	$.each(data.data, function(key, val) {
+	    items.push('<li id="' + key + '">' + val + '</li>');
+	});
+	
+	$('<ul/>', {
+	    'class': 'my-new-list',
+	    html: items.join('')
+	}).appendTo(main);
+    });
+    $('body').append(main);
+      
+    </script>
+  </body>
+</html>
+
